@@ -1,0 +1,256 @@
+\documentclass[12 pt]{article}
+
+\usepackage{amsfonts, amssymb, amsmath}
+\oddsidemargin=-0.5cm
+\setlength{\textwidth}{6.5in}
+\addtolength{\voffset}{-20pt}
+\addtolength{\headsep}{25pt}
+
+\pagestyle{myheadings}
+
+\markright{
+    \begin{minipage}[t]{0.5\textwidth}
+        Joseph González Pastora \\
+        Gabriel Gutierrez Arguedas \\
+        Ricardo Sánchez Alpízar
+    \end{minipage}
+    \hfill
+    \begin{minipage}[t]{0.3\textwidth}
+        \centering
+        Septiembre 1, 2024
+    \end{minipage}
+}
+
+\newcommand{\eqn}[0]{\begin{array}{rcl}}
+\newcommand{\eqnend}[0]{\end{array} }
+\newcommand{\qed}[0]{$\square$}
+
+\begin{document}
+
+\section*{2. Vectores (20 puntos)}
+
+\subsection*{1. (5 puntos) Graficación y propiedades de los vectores}
+
+\subsubsection*{Usando Python grafique los siguientes vectores y demuestre cuáles de los vectores son unitarios:}
+
+\begin{center}
+    $\mathbf{v_1} = \begin{bmatrix} -0.3 \\ 0.4 \\ 0.1 \end{bmatrix}$, $\mathbf{v_2} = \begin{bmatrix} 0.5 \\ 0.2 \\ 0.1 \end{bmatrix}$, $\mathbf{v_3} = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ \frac{-1}{\sqrt{2}} \\ 0 \end{bmatrix}$
+\end{center}
+
+\textbf{Magnitud del Vector \(\mathbf{v_1}\)}\\
+
+Para \(\mathbf{v_1} = \begin{bmatrix} -0.3 \\ 0.4 \\ 0.1 \end{bmatrix}\):
+\[
+\|\mathbf{v_1}\| = \sqrt{(-0.3)^2 + 0.4^2 + 0.1^2}
+= \sqrt{0.09 + 0.16 + 0.01}
+= \sqrt{0.26}
+\approx 0.510
+\]
+
+\begin{center}
+Por lo tanto, no es unitario.\\
+\end{center}
+
+\textbf{Magnitud del Vector \(\mathbf{v_2}\)}\\
+
+Para \(\mathbf{v_2} = \begin{bmatrix} 0.5 \\ 0.2 \\ 0.1 \end{bmatrix}\):
+\[
+\|\mathbf{v_2}\| = \sqrt{0.5^2 + 0.2^2 + 0.1^2}
+= \sqrt{0.25 + 0.04 + 0.01}
+= \sqrt{0.30}
+\approx 0.548
+\]
+
+\begin{center}
+Por lo tanto, no es unitario.\\
+\end{center}
+
+\textbf{Magnitud del Vector \(\mathbf{v_3}\)}\\
+
+Para \(\mathbf{v_3} = \begin{bmatrix} \frac{1}{\sqrt{2}} \\ -\frac{1}{\sqrt{2}} \\ 0 \end{bmatrix}\):
+\[
+\|\mathbf{v_3}\| = \sqrt{\left(\frac{1}{\sqrt{2}}\right)^2 + \left(-\frac{1}{\sqrt{2}}\right)^2 + 0^2}
+= \sqrt{\frac{1}{2} + \frac{1}{2}}
+= \sqrt{1}
+= 1
+\]
+
+\begin{center}
+Por lo tanto, es unitario.
+\end{center}
+
+\subsection*{2. (15 puntos) Propiedades del producto punto}
+
+Demuestre las siguientes propiedades. Además, muestrelo con una implementación en Pytorch, usando como entrada un arreglo de 50 arreglos generados al azar, adjunte un pantallazo con la salida de la comparación del resultado a ambos lados de la igualdad, o en su defecto, demuestre el no cumplimiento de la propiedad con un contraejemplo.
+
+\subsubsection*{Supuestos}
+
+Sean \(\mathbf{u} = [u_1, u_2, \dots, u_n]\), \(\mathbf{v} = [v_1, v_2, \dots, v_n]\), y \(\mathbf{w} = [w_1, w_2, \dots, w_n]\) vectores en \(\mathbb{R}^n\), y \(r\) un escalar en \(\mathbb{R}\).
+
+% -------------------------------------- Propiedad 1 -------------------------------------- %
+
+\subsubsection*{Propiedad 1: Conmutatividad}
+
+\begin{center}
+\textbf{Enunciado}: \(\mathbf{u} \cdot \mathbf{v} = \mathbf{v} \cdot \mathbf{u}\)\\
+\end{center}
+
+\textbf{Demostración}: El producto punto entre \(\mathbf{u}\) y \(\mathbf{v}\) y \(\mathbf{v}\) y \(\mathbf{u}\) se define respectivamente como:
+
+\[
+\mathbf{u} \cdot \mathbf{v} = \sum_{i=1}^{n} u_i v_i
+\]
+
+\[
+\mathbf{v} \cdot \mathbf{u} = \sum_{i=1}^{n} v_i u_i
+\]
+
+Partiendo de la sumatoria derivada de la primera expresión, es posible llegar a la correspondiente sumatoria de la segunda expresión tal como se puede observar a continuación:
+
+\[
+\sum_{i=1}^{n} u_i v_i = \sum_{i=1}^{n} v_i u_i
+\]
+
+\begin{center}
+Por lo tanto, \(\mathbf{u} \cdot \mathbf{v} = \mathbf{v} \cdot \mathbf{u}\)\\
+\end{center}
+
+% -------------------------------------- Propiedad 2 -------------------------------------- %
+
+\subsubsection*{Propiedad 2: Distributividad}
+
+\begin{center}
+\textbf{Enunciado}: \(\mathbf{u} \cdot (\mathbf{v} + \mathbf{w}) = \mathbf{u} \cdot \mathbf{v} + \mathbf{u} \cdot \mathbf{w}\)\\
+\end{center}
+
+\textbf{Demostración}: Primero, recordemos que el vector correspondiente a \(\mathbf{v} + \mathbf{w}\) también puede expresarse como:
+
+\[
+\mathbf{v} + \mathbf{w} = [v_1 + w_1, v_2 + w_2, \dots, v_n + w_n]
+\]
+
+Adicionalmente, sabemos que la expresión \(\mathbf{u} \cdot (\mathbf{v} + \mathbf{w})\) también puede presentarse con esta notación:
+
+\[
+\mathbf{u} \cdot (\mathbf{v} + \mathbf{w}) = \sum_{i=1}^{n} u_i (v_i + w_i)
+\]
+
+Entendiendo que cada componente de los vectores pertenece a \(\mathbb{R}\), se puede reacomodar la sumatoria así, distribuyendo sus componentes internos y separando en dos sumatorias finales:
+
+\[
+\sum_{i=1}^{n} u_i (v_i + w_i) = \sum_{i=1}^{n} (u_i v_i + u_i w_i) = \sum_{i=1}^{n} u_i v_i + \sum_{i=1}^{n} u_i w_i
+\]
+
+En este punto, es posible regresar a la notación por producto punto donde se obtiene \(\mathbf{u} \cdot \mathbf{v} + \mathbf{u} \cdot \mathbf{w}\).
+
+\begin{center}
+Por lo tanto, \(\mathbf{u} \cdot (\mathbf{v} + \mathbf{w}) = \mathbf{u} \cdot \mathbf{v} + \mathbf{u} \cdot \mathbf{w}\)\\
+\end{center}
+
+% -------------------------------------- Propiedad 3 -------------------------------------- %
+
+\subsubsection*{Propiedad 3: Multiplicación por escalar}
+
+\begin{center}
+\textbf{Enunciado}: \((r \mathbf{u}) \cdot \mathbf{v} = r (\mathbf{u} \cdot \mathbf{v})\)\\
+\end{center}
+
+\textbf{Demostración}: Primero, calculamos el vector \(r \mathbf{u}\) similar al primer paso de la propiedad anterior:
+
+\[
+r \mathbf{u} = [r u_1, r u_2, \dots, r u_n]
+\]
+
+Luego, calculamos el producto punto \((r \mathbf{u}) \cdot \mathbf{v}\) en forma de su sumatoria equivalente:
+
+\[
+(r \mathbf{u}) \cdot \mathbf{v} = \sum_{i=1}^{n} (r u_i) v_i
+\]
+
+Esta expresión puede desarrollarse aún más extrayendo el escalar \(\mathbf{r}\) de la sumatoria:
+
+\[
+\sum_{i=1}^{n} (r u_i) v_i = r \sum_{i=1}^{n} u_i v_i
+\]
+
+La sumatoria resultante es equivalente a \(r (\mathbf{u} \cdot \mathbf{v})\).
+
+\begin{center}
+Por lo tanto, \((r \mathbf{u}) \cdot \mathbf{v} = r (\mathbf{u} \cdot \mathbf{v})\)\\
+\end{center}
+
+% -------------------------------------- Propiedad 4 -------------------------------------- %
+
+\subsubsection*{Propiedad 4: Distributividad sobre la suma y escalar}
+
+\begin{center}
+\textbf{Enunciado}: \(\mathbf{u} \cdot (r \mathbf{v} + \mathbf{w}) = r (\mathbf{u} \cdot \mathbf{v}) + (\mathbf{u} \cdot \mathbf{w})\)\\
+\end{center}
+
+\textbf{Demostración}: Partiendo de lo desarrollado en la \textbf{Propiedad 2} se puede desarrollar la parte izquierda de la siguiente forma:
+
+\[
+\sum_{i=1}^{n} u_i (r v_i + w_i) = \sum_{i=1}^{n} (u_i r v_i + u_i w_i) = \sum_{i=1}^{n} u_i r v_i + \sum_{i=1}^{n} u_i w_i
+\]
+
+Seguidamente, se aplica \textbf{Propiedad 3} sobre la sumatoria resultante izquierda para reorganizar visualmente la expresión y despejar el escalar:
+
+\[
+\sum_{i=1}^{n} u_i (r v_i) = r \sum_{i=1}^{n} u_i v_i
+\]
+
+Esto deja la siguiente expresión como resultado general:
+
+\[
+\sum_{i=1}^{n} u_i r v_i + \sum_{i=1}^{n} u_i w_i = r \sum_{i=1}^{n} u_i v_i + \sum_{i=1}^{n} u_i w_i
+\]
+
+Al regresar a notación vectorial del producto punto obtenemos el resultado final \(r (\mathbf{u} \cdot \mathbf{v}) + (\mathbf{u} \cdot \mathbf{w})\)
+
+\begin{center}
+Por lo tanto, \(\mathbf{u} \cdot (r \mathbf{v} + \mathbf{w}) = r (\mathbf{u} \cdot \mathbf{v}) + (\mathbf{u} \cdot \mathbf{w})\)\\
+\end{center}
+
+% -------------------------------------- Propiedad 5 -------------------------------------- %
+
+\subsubsection*{Propiedad 5: No asociatividad del producto punto}
+
+\begin{center}
+\textbf{Enunciado}: \(\mathbf{u} \cdot (\mathbf{v} \cdot \mathbf{w}) \neq (\mathbf{u} \cdot \mathbf{v}) \cdot \mathbf{w}\)\\
+\end{center}
+
+\textbf{Demostración por contradicción}: Supongamos que el producto punto es asociativo, es decir:
+
+\[
+\mathbf{u} \cdot (\mathbf{v} \cdot \mathbf{w}) = (\mathbf{u} \cdot \mathbf{v}) \cdot \mathbf{w}
+\]
+
+Si se desarrollan ambos lados de la igualdad obtenemos individualmente:
+
+\[
+\mathbf{u} \cdot (\mathbf{v} \cdot \mathbf{w}) = \mathbf{u} \cdot a
+\]
+
+\[
+(\mathbf{u} \cdot \mathbf{v}) \cdot \mathbf{w} = b \cdot \mathbf{w}
+\]
+
+Con los siguientes valores para cada escalar:
+
+\[
+\mathbf{a} = (\mathbf{v} \cdot \mathbf{w}) = \sum_{i=1}^{n} v_i w_i
+\]
+
+\[
+\mathbf{b} = (\mathbf{u} \cdot \mathbf{v}) = \sum_{i=1}^{n} u_i v_i
+\]
+
+Aquí observamos la primera problemática, se está intentado aplicar el operador de producto punto, definido sobre dos vectores, entre un escalar y un vector. \textbf{Contradicción}.\\
+
+De igual forma, si se deseara forzar el uso de la multiplicación, no existe certeza de que el resultado sea igual en ambos lados de la igualdad.
+
+\begin{center}
+Por lo tanto, \(\mathbf{u} \cdot (\mathbf{v} \cdot \mathbf{w}) \neq (\mathbf{u} \cdot \mathbf{v}) \cdot \mathbf{w}\)\\
+\end{center}
+
+\end{document}
