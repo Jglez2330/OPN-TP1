@@ -793,7 +793,6 @@ Por lo tanto, \(\mathbf{u} \cdot \mathbf{v} = \mathbf{v} \cdot \mathbf{u}\)\\
 
 \textbf{Ejercicio demostrativo propuesto:}
 \begin{lstlisting}[language=Python]
-    # Calcular el producto punto
     dot_uv = torch.dot(u, v)
     dot_vu = torch.dot(v, u)
     
@@ -804,8 +803,8 @@ Por lo tanto, \(\mathbf{u} \cdot \mathbf{v} = \mathbf{v} \cdot \mathbf{u}\)\\
 
 \textbf{Resultado:}
 \begin{lstlisting}
-    u . v = 12.668193817138672
-    v . u = 12.668193817138672
+    u . v = 13.014402389526367
+    v . u = 13.014402389526367
     Conmutatividad cumple: True
 \end{lstlisting}
 
@@ -843,7 +842,6 @@ Por lo tanto, \(\mathbf{u} \cdot (\mathbf{v} + \mathbf{w}) = \mathbf{u} \cdot \m
 
 \textbf{Ejercicio demostrativo propuesto:}
 \begin{lstlisting}[language=Python]
-    # Calcular el producto punto
     dot_u_v_p_w = torch.dot(u, v + w)
     dot_uv = torch.dot(u, v)
     dot_uw = torch.dot(u, w)
@@ -855,8 +853,8 @@ Por lo tanto, \(\mathbf{u} \cdot (\mathbf{v} + \mathbf{w}) = \mathbf{u} \cdot \m
 
 \textbf{Resultado:}
 \begin{lstlisting}
-    u . (v + w) = 24.99212074279785
-    u . v + u . w = 24.99212074279785
+    u . (v + w) = 28.568178176879883
+    u . v + u . w = 28.56817626953125
     Distributividad cumple: True
 \end{lstlisting}
 
@@ -894,7 +892,6 @@ Por lo tanto, \((r \mathbf{u}) \cdot \mathbf{v} = r (\mathbf{u} \cdot \mathbf{v}
 
 \textbf{Ejercicio demostrativo propuesto:}
 \begin{lstlisting}[language=Python]
-    # Calcular el producto punto
     dot_r_u_v = torch.dot(r * u, v)
     dot_u_v = torch.dot(u, v)
     r_dot_uv = r * dot_u_v
@@ -906,8 +903,8 @@ Por lo tanto, \((r \mathbf{u}) \cdot \mathbf{v} = r (\mathbf{u} \cdot \mathbf{v}
 
 \textbf{Resultado:}
 \begin{lstlisting}
-    (r * u) . v = 1.1200087070465088
-    r * (u . v) = 1.1200088262557983
+    (r * u) . v = 10.28683853149414
+    r * (u . v) = 10.28683853149414
     Multiplicacion por escalar cumple: True
 \end{lstlisting}
 
@@ -945,7 +942,6 @@ Por lo tanto, \(\mathbf{u} \cdot (r \mathbf{v} + \mathbf{w}) = r (\mathbf{u} \cd
 
 \textbf{Ejercicio demostrativo propuesto:}
 \begin{lstlisting}[language=Python]
-    # Calcular el producto punto
     dot_u_r_v_p_w = torch.dot(u, r * v + w)
     r_dot_uv = r * torch.dot(u, v)
     dot_u_w = torch.dot(u, w)
@@ -958,8 +954,8 @@ Por lo tanto, \(\mathbf{u} \cdot (r \mathbf{v} + \mathbf{w}) = r (\mathbf{u} \cd
 
 \textbf{Resultado:}
 \begin{lstlisting}
-    u . (r * v + w) = 13.443936347961426
-    r * (u . v) + (u . w) = 13.44393539428711
+    u . (r * v + w) = 25.840614318847656
+    r * (u . v) + (u . w) = 25.840612411499023
     Distributividad sobre la suma y escalar: True
 \end{lstlisting}
 
@@ -1001,13 +997,12 @@ Aquí observamos la primera problemática, se está intentado aplicar el operado
 
 \textbf{Ejercicio demostrativo propuesto:}
 \begin{lstlisting}[language=Python]
-    # Calcular el producto punto
     dot_uv_w = torch.dot(u, torch.dot(v, w))
     dot_u_v_dot_w = torch.dot(torch.dot(u, v), w)
     
     print(f"u . (v . w) = {dot_uv_w.item()}")
     print(f"(u . v) . w = {dot_u_v_dot_w.item()}")
-    print(f"No asociatividad cumple: {not torch.isclose(dot_uv_w, dot_u_v_dot_w)}")
+    print(f"Asociatividad cumple: {torch.isclose(dot_uv_w, dot_u_v_dot_w)}")
 \end{lstlisting}
 
 \textbf{Resultado:}
@@ -1028,34 +1023,32 @@ De igual forma, si se deseara forzar el uso de la multiplicación, no existe cer
 
 \textbf{Ejercicio demostrativo propuesto:}
 \begin{lstlisting}[language=Python]
-    # Calcular el producto punto
     dot_uv_w = u * torch.dot(v, w).item()
     dot_u_v_dot_w = torch.dot(u, v).item() * w
     
     print(f"u * (v . w) = {dot_uv_w}")
     print(f"(u . v) * w = {dot_u_v_dot_w}")
     compare_vectors = torch.allclose(dot_uv_w, dot_u_v_dot_w, rtol=1e-5, atol=1e-8)
-    print(f"No asociatividad cumple: {compare_vectors}")
+    print(f"Asociatividad cumple: {compare_vectors}")
 \end{lstlisting}
 
 \textbf{Resultado:}
 \begin{lstlisting}
-    u * (v . w) = tensor([0.3009, 7.4883, 2.4860, 2.6847, 5.1419, 6.4698, 5.5554, 3.3602, 5.8269,
-    4.3761, 5.0893, 3.8344, 1.3015, 6.8556, 5.4443, 3.4289, 0.5165, 8.3153,
-    2.2124, 1.9570, 7.7292, 7.5088, 3.2487, 8.2100, 5.7350, 6.7694, 1.5590,
-    0.2114, 7.5589, 9.0212, 6.5527, 4.1646, 6.3097, 8.7313, 3.3068, 8.0335,
-    5.4208, 2.1019, 8.9808, 8.3579, 1.6562, 8.4965, 3.8513, 1.2102, 0.2043,
-    3.3564, 7.6274, 2.9895, 4.9750, 3.3545])
-
-    (u . v) * w = tensor([ 3.3962,  1.7961, 10.6158,  0.3049,  0.8713,  2.7678,  8.6491,  4.1141,
-    7.5199,  7.1921, 11.8213,  0.1444,  6.1948, 11.9946,  8.8851, 10.8425,
-    2.5087,  9.8325, 11.4413,  3.6883,  1.1270, 11.8235,  6.4691,  9.7171,
-    1.4968,  0.6931,  2.0069,  0.0277,  0.3136,  5.6290,  0.4766,  4.5400,
-    3.3110,  5.8826,  4.5063,  9.0228,  3.5504,  5.8041,  7.4151,  9.1892,
-    2.0918, 10.3041, 11.4931,  5.4224,  5.8953,  4.7629,  1.3223,  1.5785,
-    6.2940, 11.1969])
-
-    No asociatividad cumple: False
+u * (v . w) = tensor([ 5.2004,  1.8465,  4.0598,  8.4940,  7.3160,  3.9108,  6.9364,  1.1089,
+    7.7678,  8.4213, 12.8140,  9.3583,  5.7158, 11.8077, 11.2251,  9.0907,
+    6.3531, 11.2350,  2.3977, 10.8078,  3.9560, 10.0290,  9.1984,  9.7882,
+    5.7095,  6.7016,  1.4831,  1.3565,  9.5772,  4.0705,  4.8923,  2.0033,
+    8.5814, 10.0672,  9.0177,  3.4351, 11.5927,  0.6206,  1.9212,  4.9786,
+   10.0402,  3.1420,  8.3234, 10.7319, 10.2621,  5.2403,  0.5391,  9.2494,
+    9.8043, 11.5759])
+(u . v) * w = tensor([ 4.3005,  5.5607,  9.1774,  3.7265,  7.7479,  0.7914,  6.6909, 10.4043,
+    8.2803,  6.9541,  0.3790,  5.9675,  8.2958, 10.0988,  3.6630,  7.7503,
+    4.8988,  9.6043,  6.0584,  8.2298,  3.0009, 12.9015, 11.5620, 12.5870,
+    0.2562,  7.0523,  5.3444,  8.6081,  5.5618,  6.4828, 10.6026,  9.7157,
+   12.5855, 11.4973, 11.2574,  6.5498, 12.6182, 12.2214,  3.2008, 11.6898,
+   12.6560,  3.3989,  3.3404,  3.1903,  0.7170, 12.6289,  8.7186, 11.4072,
+   12.4877,  2.6968])
+Asociatividad cumple: False
 \end{lstlisting}
 
 \begin{center}
